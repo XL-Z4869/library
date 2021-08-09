@@ -75,7 +75,7 @@
                         <td>
                             <a href="" @click.prevent="toEdit(item.id)">修改</a>
                             <span>|</span>
-                            <a href="" @click.prevent="">删除</a>
+                            <a href="" @click.prevent="toDelete(item.id)">删除</a>
                         </td>
                     </tr>
 
@@ -143,7 +143,17 @@
                     console.log(book);
                     this.id = book[0].id
                     this.name = book[0].name
+                },
+                toDelete: function(id) {
+                    // this.books = this.books.filter(item => {
+                    //     return item.id != id
+                    // })
+                    let index = this.books.findIndex(item => {
+                        return item.id = id
+                    })
+                    this.books.splice(index, 1)
                 }
+
             },
         })
     </script>
