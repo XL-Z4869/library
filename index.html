@@ -49,7 +49,7 @@
                         <label for="id">
                             编号:
                         </label>
-                        <input type="text" id="id" v-model="id">
+                        <input type="text" id="id" v-model="id" :disabled="flag">
                         <label for="name">
                             名称:
                         </label>
@@ -73,9 +73,9 @@
                         <td>{{item.name}}</td>
                         <td></td>
                         <td>
-                            <a href="" @click.prevent>删除</a>
+                            <a href="" @click.prevent="toEdit(item.id)">修改</a>
                             <span>|</span>
-                            <a href="" @click.prevent>修改</a>
+                            <a href="" @click.prevent="">删除</a>
                         </td>
                     </tr>
 
@@ -91,6 +91,7 @@
         var vm = new Vue({
             el: '#app',
             data: {
+                flag: false,
                 id: '',
                 name: '',
                 books: [{
@@ -113,10 +114,35 @@
             },
             methods: {
                 submitHandler: function() {
-                    let book = {}
-                    book.id = this.id;
-                    book.name = this.name
-                    this.books.push(book)
+                    if (this.flag) {
+                        this.books.some(item => {
+                            if (item.id == this.id) {
+                                item.name = this.name
+                                return true
+                            }
+                            this.flag = true
+                        })
+                        flag = true
+                    } else {
+                        let book = {}
+                        book.id = this.id;
+                        book.name = this.name
+                        this.books.push(book)
+                        this.id = ''
+                        this.name = ''
+                    }
+                    this.id = ''
+                    this.name = ''
+
+                },
+                toEdit: function(id) {
+                    this.flag = true
+                    let book = this.books.filter((item) => {
+                        return item.id == id
+                    })
+                    console.log(book);
+                    this.id = book[0].id
+                    this.name = book[0].name
                 }
             },
         })
